@@ -1,0 +1,65 @@
+private LinkedList<Node<T>> nodes = new LinkedList<>();
+private LinkedList<Edge<T>> edges = new LinkedList<>();
+
+public boolean belmanFord(Node<T> source){
+        dist = new HashMap<>();
+        prev = new HashMap<>();
+        ArrayList<Node<T>> q = new ArrayList<>();
+        for (Node<T> vertex : nodes) {
+            Double positiveInfinity = Double.POSITIVE_INFINITY;
+            dist.put(vertex, positiveInfinity);
+            q.add(vertex);
+        }
+        dist.put(source, 0d);
+
+        for (int i = 0; i < q.size()-1; i++) {
+            for (Edge<T> edge : edges) {
+                if(dist.get(edge.getNodo2()) > dist.get(edge.getNodo1()) + edge.getValue()){
+                    dist.put(edge.getNodo2(), dist.get(edge.getNodo1()) + edge.getValue());
+                    prev.put(edge.getNodo2(), edge.getNodo1());
+                }
+            }
+            for (Edge<T> edge : edges) {
+                if(dist.get(edge.getNodo2()) > dist.get(edge.getNodo1()) + edge.getValue()){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+
+public class Node <T>{
+    private T data;
+    Node(T data){
+        this.data = data;
+    }
+    public T getData() {
+        return data;
+    }
+}
+
+public class Edge <T>{
+        private Node<T> nodo1;
+        private Node<T> nodo2;
+        private double value;
+        private boolean bidirezionale;
+        Edge(Node<T> nodo1, Node<T> nodo2, double value, boolean bidirezionale){
+            this.nodo1 = nodo1;
+            this.nodo2 = nodo2;
+            this.value = value;
+            this.bidirezionale = bidirezionale;
+        }
+        @Override
+        public String toString() {
+            return nodo1.getData() + " " + nodo2.getData() + " " + value;
+        }public Node<T> getNodo1() {
+            return nodo1;
+        }
+        public Node<T> getNodo2() {
+            return nodo2;
+        }
+        public double getValue() {
+            return value;
+        }
+    }
